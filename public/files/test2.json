@@ -1,0 +1,200 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "redis-backup:v06",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "ubuntu",
+      "Name": "22.04"
+    },
+    "ImageID": "sha256:5f07a88877f47a8fb4621814958049955461fe24d90551fe854392ac3c20e4b4",
+    "DiffIDs": [
+      "sha256:f4a670ac65b68f8757aea863ac0de19e627c0ea57165abad8094eae512ca7dad",
+      "sha256:217e3a13f04f1e09660f3a7228ba7dbce1bdc3cc3e19c7fd3fb29d9ee0f659e3",
+      "sha256:2f72b79087b7402dd5929bc6b8ac9ef183f3f6b2bf4d9f83255e4bdc31f66116",
+      "sha256:db7bdeafbb76b6261028f3bc98fe69d92fd763bc44a3d9404e75b60ac11186e4"
+    ],
+    "RepoTags": [
+      "619433764862.dkr.ecr.us-east-1.amazonaws.com/redis-backup:v06",
+      "redis-backup:v06"
+    ],
+    "RepoDigests": [
+      "619433764862.dkr.ecr.us-east-1.amazonaws.com/redis-backup@sha256:34d4e14cc954d4a509283764beeafa5f5d30214747523135f823e16e758e1e86"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "created": "2022-12-08T09:05:35.422758629Z",
+      "history": [
+        {
+          "created": "2022-11-02T18:25:55Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:29c72d5be8c977acaeb6391aeb23ec27559b594e25a0bb3a6dd280bac2847b7f in / "
+        },
+        {
+          "created": "2022-11-02T18:25:55Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"bash\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2022-12-06T23:15:16Z",
+          "created_by": "RUN /bin/sh -c apt update \u0026\u0026 apt install -y redis-tools s3cmd # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2022-12-08T09:05:35Z",
+          "created_by": "COPY .s3cfg /root/.s3cfg # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2022-12-08T09:05:35Z",
+          "created_by": "WORKDIR /backup",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2022-12-08T09:05:35Z",
+          "created_by": "CMD [\"/bin/sh\" \"-c\" \"redis-cli -h redis-master -p 6379 -a m7I4ZkzM9nKf --rdb backup.rdb;s3cmd put backup.rdb s3://wis-pr-datastore-backup/redis/backup.`date +%F`.rdb\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:f4a670ac65b68f8757aea863ac0de19e627c0ea57165abad8094eae512ca7dad",
+          "sha256:217e3a13f04f1e09660f3a7228ba7dbce1bdc3cc3e19c7fd3fb29d9ee0f659e3",
+          "sha256:2f72b79087b7402dd5929bc6b8ac9ef183f3f6b2bf4d9f83255e4bdc31f66116",
+          "sha256:db7bdeafbb76b6261028f3bc98fe69d92fd763bc44a3d9404e75b60ac11186e4"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/bin/sh",
+          "-c",
+          "redis-cli -h redis-master -p 6379 -a m7I4ZkzM9nKf --rdb backup.rdb;s3cmd put backup.rdb s3://wis-pr-datastore-backup/redis/backup.`date +%F`.rdb"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "WorkingDir": "/backup",
+        "ArgsEscaped": true
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "redis-backup:v06 (ubuntu 22.04)",
+      "Class": "os-pkgs",
+      "Type": "ubuntu"
+    },
+    {
+      "Target": "/root/.s3cfg",
+      "Class": "secret",
+      "Secrets": [
+        {
+          "RuleID": "aws-access-key-id",
+          "Category": "AWS",
+          "Severity": "CRITICAL",
+          "Title": "AWS Access Key ID",
+          "StartLine": 2,
+          "EndLine": 2,
+          "Code": {
+            "Lines": [
+              {
+                "Number": 1,
+                "Content": "[default]",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "[default]",
+                "FirstCause": false,
+                "LastCause": false
+              },
+              {
+                "Number": 2,
+                "Content": "access_key = ********************",
+                "IsCause": true,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "access_key = ********************",
+                "FirstCause": true,
+                "LastCause": true
+              },
+              {
+                "Number": 3,
+                "Content": "access_token = ",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "access_token = ",
+                "FirstCause": false,
+                "LastCause": false
+              }
+            ]
+          },
+          "Match": "access_key = ********************",
+          "Layer": {
+            "DiffID": "sha256:2f72b79087b7402dd5929bc6b8ac9ef183f3f6b2bf4d9f83255e4bdc31f66116",
+            "CreatedBy": "COPY .s3cfg /root/.s3cfg # buildkit"
+          }
+        },
+        {
+          "RuleID": "aws-secret-access-key",
+          "Category": "AWS",
+          "Severity": "CRITICAL",
+          "Title": "AWS Secret Access Key",
+          "StartLine": 66,
+          "EndLine": 66,
+          "Code": {
+            "Lines": [
+              {
+                "Number": 64,
+                "Content": "restore_days = 1",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "restore_days = 1",
+                "FirstCause": false,
+                "LastCause": false
+              },
+              {
+                "Number": 65,
+                "Content": "restore_priority = Standard",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "restore_priority = Standard",
+                "FirstCause": false,
+                "LastCause": false
+              },
+              {
+                "Number": 66,
+                "Content": "secret_key = ****************************************",
+                "IsCause": true,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "secret_key = ****************************************",
+                "FirstCause": true,
+                "LastCause": true
+              },
+              {
+                "Number": 67,
+                "Content": "send_chunk = 65536",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "send_chunk = 65536",
+                "FirstCause": false,
+                "LastCause": false
+              }
+            ]
+          },
+          "Match": "secret_key = ****************************************",
+          "Layer": {
+            "DiffID": "sha256:2f72b79087b7402dd5929bc6b8ac9ef183f3f6b2bf4d9f83255e4bdc31f66116",
+            "CreatedBy": "COPY .s3cfg /root/.s3cfg # buildkit"
+          }
+        }
+      ]
+    }
+  ]
+}
